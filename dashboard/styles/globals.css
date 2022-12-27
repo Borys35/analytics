@@ -43,3 +43,9 @@
     @apply text-xl;
   }
 }
+
+@layer components {
+  .link {
+    @apply underline text-primary-400;
+  }
+}

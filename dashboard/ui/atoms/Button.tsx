@@ -1,7 +1,7 @@
 import classNames from "classnames";
 import { FC } from "react";
 
-interface Props {
+interface Props extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
   size?: "base" | "lg";
   variant?: "primary" | "secondary";
@@ -11,11 +11,13 @@ const Button: FC<Props> = ({
   children,
   size = "base",
   variant = "primary",
+  className,
+  ...props
 }) => {
   return (
     <div
       className={classNames(
-        "rounded-xl transition font-bold cursor-pointer border-2",
+        "rounded-xl transition font-bold cursor-pointer border-2 text-center",
         { "px-4 py-1.5 text-base": size === "base" },
         { "px-8 py-3 text-lg": size === "lg" },
         {
@@ -25,8 +27,10 @@ const Button: FC<Props> = ({
         {
           "border-primary-600 hover:border-primary-500":
             variant === "secondary",
-        }
+        },
+        className
       )}
+      {...props}
     >
       {children}
     </div>

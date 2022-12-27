@@ -16,7 +16,7 @@ const Homepage = () => {
           With Trakker you can connect your web app to a dashboard and view all
           analysis and statistics that your website generates.
         </p>
-        <div className="flex flex-wrap gap-4">
+        <div className="flex flex-wrap gap-4 justify-center">
           <Link href="/sign-up">
             <Button size="lg">Get started</Button>
           </Link>
