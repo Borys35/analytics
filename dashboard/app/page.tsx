@@ -1,4 +1,5 @@
 import Button from "@/ui/atoms/Button";
+import Header from "@/ui/Header";
 import InstructionItem from "@/ui/InstructionItem";
 import ServiceItem from "@/ui/ServiceItem";
 import Link from "next/link";
@@ -6,7 +7,7 @@ import Link from "next/link";
 const Homepage = () => {
   return (
     <div className="flex flex-col py-24 gap-48">
-      <header className="text-center flex flex-col items-center lg:w-2/3 mx-auto">
+      <Header>
         <h1 className="mb-6">
           Analyse your websites with{" "}
           <span className="text-primary-500">Trakker</span>
@@ -29,7 +30,7 @@ const Homepage = () => {
             </Button>
           </a>
         </div>
-      </header>
+      </Header>
       <section className="md:grid md:grid-cols-2 md:gap-16">
         <h2 className="mb-16 md:mb-0">
           See what you can do with{" "}
