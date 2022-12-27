@@ -14,7 +14,7 @@ const Field = forwardRef<HTMLInputElement, Props>(
         {label && <label htmlFor={name}>{label}</label>}
         <input
           className={`px-4 py-1.5 text-base bg-neutral-800 border-neutral-700
-                    border-2 rounded-xl outline-none focus:border-neutral-500`}
+                    border-2 rounded-lg outline-none focus:border-neutral-500`}
           id={name}
           name={name}
           ref={ref}

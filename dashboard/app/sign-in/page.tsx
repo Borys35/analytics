@@ -4,6 +4,7 @@ import { supabaseClient } from "@/lib/supabase";
 import Button from "@/ui/atoms/Button";
 import Field from "@/ui/atoms/Field";
 import Header from "@/ui/Header";
+import ProviderButtons from "@/ui/ProviderButtons";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Link from "next/link";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -29,15 +30,12 @@ const SignInPage = () => {
   } = useForm<Inputs>({
     resolver: yupResolver(schema),
   });
-  const listClasses = `flex flex-col gap-4`;
 
   const onSubmit: SubmitHandler<Inputs> = async ({ email, password }) => {
-    console.log("ddd");
     const { data, error } = await supabaseClient.auth.signInWithPassword({
       email,
       password,
     });
-    console.log(data, error);
   };
 
   return (
@@ -53,12 +51,9 @@ const SignInPage = () => {
         </p>
       </Header>
       <div className="flex flex-col gap-8 w-full max-w-sm mx-auto">
-        <div className={listClasses}>
-          <Button>Sign in with Google</Button>
-          <Button>Sign in with GitHub</Button>
-        </div>
+        <ProviderButtons />
         <p className="self-center text-lg">or</p>
-        <form className={listClasses} onSubmit={handleSubmit(onSubmit)}>
+        <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
           <Field
             label="Your e-mail"
             type="email"

@@ -3,6 +3,7 @@
 import Button from "@/ui/atoms/Button";
 import Field from "@/ui/atoms/Field";
 import Header from "@/ui/Header";
+import ProviderButtons from "@/ui/ProviderButtons";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
@@ -37,7 +38,6 @@ const SignUpPage = () => {
   } = useForm<Inputs>({
     resolver: yupResolver(schema),
   });
-  const listClasses = `flex flex-col gap-4`;
 
   const onSubmit: SubmitHandler<Inputs> = async ({
     email,
@@ -49,7 +49,6 @@ const SignUpPage = () => {
       password,
       options: { data: { username } },
     });
-    console.log(data, error);
   };
 
   return (
@@ -65,12 +64,9 @@ const SignUpPage = () => {
         </p>
       </Header>
       <div className="flex flex-col gap-8 w-full max-w-sm mx-auto">
-        <div className={listClasses}>
-          <Button>Sign up with Google</Button>
-          <Button>Sign up with GitHub</Button>
-        </div>
+        <ProviderButtons />
         <p className="self-center text-lg">or</p>
-        <form className={listClasses} onSubmit={handleSubmit(onSubmit)}>
+        <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
           <Field
             label="Username"
             {...register("username")}

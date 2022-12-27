@@ -21,7 +21,7 @@ const Button: FC<Props> = ({
   return (
     <Element
       className={classNames(
-        "rounded-xl transition font-bold cursor-pointer border-2 text-center",
+        "rounded-lg transition font-bold cursor-pointer border-2 text-center",
         { "px-4 py-1.5 text-base": size === "base" },
         { "px-8 py-3 text-lg": size === "lg" },
         {
