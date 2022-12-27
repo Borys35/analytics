@@ -1,10 +1,58 @@
+"use client";
+
 import Button from "@/ui/atoms/Button";
 import Field from "@/ui/atoms/Field";
 import Header from "@/ui/Header";
+import { yupResolver } from "@hookform/resolvers/yup";
 import Link from "next/link";
+import { useForm } from "react-hook-form";
+import { SubmitHandler } from "react-hook-form/dist/types/form";
+import * as yup from "yup";
+import { supabaseClient } from "../../lib/supabase";
+
+type Inputs = {
+  username: string;
+  email: string;
+  password: string;
+  password2: string;
+};
+
+const schema = yup
+  .object({
+    username: yup.string().min(2).max(16).required(),
+    email: yup.string().email().required(),
+    password: yup.string().min(8).required(),
+    password2: yup
+      .string()
+      .oneOf([yup.ref("password"), null])
+      .required(),
+  })
+  .required();
 
 const SignUpPage = () => {
+  const {
+    formState: { errors },
+    handleSubmit,
+    register,
+  } = useForm<Inputs>({
+    resolver: yupResolver(schema),
+  });
   const listClasses = `flex flex-col gap-4`;
+
+  const onSubmit: SubmitHandler<Inputs> = async ({
+    email,
+    username,
+    password,
+  }) => {
+    const { data, error } = await supabaseClient.auth.signUp({
+      email,
+      password,
+      options: { data: { username } },
+    });
+    console.log(data, error);
+  };
+
+  // supabaseClient.auth.signOut();
 
   return (
     <div className="flex flex-col py-24 gap-16">
@@ -24,12 +72,36 @@ const SignUpPage = () => {
           <Button>Sign up with GitHub</Button>
         </div>
         <p className="self-center text-lg">or</p>
-        <form className={listClasses}>
-          <Field label="Username" name="username" />
-          <Field label="Your e-mail" name="email" type="email" />
-          <Field label="Password" name="password" type="password" />
-          <Field label="Repeat password" name="password2" type="password" />
-          <Button className="self-end mt-2">Sign up</Button>
+        <form className={listClasses} onSubmit={handleSubmit(onSubmit)}>
+          <Field
+            label="Username"
+            autoComplete="username"
+            {...register("username")}
+            error={errors.username}
+          />
+          <Field
+            label="Your e-mail"
+            type="email"
+            {...register("email")}
+            error={errors.email}
+          />
+          <Field
+            label="Password"
+            type="password"
+            autoComplete="new-password"
+            {...register("password")}
+            error={errors.password}
+          />
+          <Field
+            label="Repeat password"
+            type="password"
+            autoComplete="new-password"
+            {...register("password2")}
+            error={errors.password2}
+          />
+          <Button className="self-end mt-2" as="button">
+            Sign up
+          </Button>
         </form>
       </div>
     </div>

@@ -18,8 +18,6 @@
   },
   "homepage": "https://github.com/Borys35/trakker-analytics#readme",
   "dependencies": {
-    "@types/react-helmet": "^6.1.6",
-    "react-helmet": "^6.1.0",
     "typescript": "^4.9.4"
   }
 }

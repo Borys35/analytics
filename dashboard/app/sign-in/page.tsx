@@ -26,7 +26,12 @@ const SignInPage = () => {
         <p className="self-center text-lg">or</p>
         <form className={listClasses}>
           <Field label="Your e-mail" name="email" type="email" />
-          <Field label="Password" name="password" type="password" />
+          <Field
+            label="Password"
+            name="password"
+            type="password"
+            autoComplete="current-password"
+          />
           <Button className="self-end mt-2">Sign in</Button>
         </form>
       </div>

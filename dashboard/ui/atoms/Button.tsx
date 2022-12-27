@@ -5,17 +5,21 @@ interface Props extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
   size?: "base" | "lg";
   variant?: "primary" | "secondary";
+  as?: React.ElementType;
 }
 
 const Button: FC<Props> = ({
   children,
   size = "base",
   variant = "primary",
+  as,
   className,
   ...props
 }) => {
+  const Element = as || "div";
+
   return (
-    <div
+    <Element
       className={classNames(
         "rounded-xl transition font-bold cursor-pointer border-2 text-center",
         { "px-4 py-1.5 text-base": size === "base" },
@@ -33,7 +37,7 @@ const Button: FC<Props> = ({
       {...props}
     >
       {children}
-    </div>
+    </Element>
   );
 };
 
