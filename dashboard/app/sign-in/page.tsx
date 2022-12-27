@@ -1,10 +1,44 @@
+"use client";
+
+import { supabaseClient } from "@/lib/supabase";
 import Button from "@/ui/atoms/Button";
 import Field from "@/ui/atoms/Field";
 import Header from "@/ui/Header";
+import { yupResolver } from "@hookform/resolvers/yup";
 import Link from "next/link";
+import { SubmitHandler, useForm } from "react-hook-form";
+import * as yup from "yup";
+
+type Inputs = {
+  email: string;
+  password: string;
+};
+
+const schema = yup
+  .object({
+    email: yup.string().email().required(),
+    password: yup.string().min(8).required(),
+  })
+  .required();
 
 const SignInPage = () => {
+  const {
+    formState: { errors },
+    handleSubmit,
+    register,
+  } = useForm<Inputs>({
+    resolver: yupResolver(schema),
+  });
   const listClasses = `flex flex-col gap-4`;
+
+  const onSubmit: SubmitHandler<Inputs> = async ({ email, password }) => {
+    console.log("ddd");
+    const { data, error } = await supabaseClient.auth.signInWithPassword({
+      email,
+      password,
+    });
+    console.log(data, error);
+  };
 
   return (
     <div className="flex flex-col py-24 gap-16">
@@ -24,15 +58,24 @@ const SignInPage = () => {
           <Button>Sign in with GitHub</Button>
         </div>
         <p className="self-center text-lg">or</p>
-        <form className={listClasses}>
-          <Field label="Your e-mail" name="email" type="email" />
+        <form className={listClasses} onSubmit={handleSubmit(onSubmit)}>
+          <Field
+            label="Your e-mail"
+            type="email"
+            autoComplete="username"
+            {...register("email")}
+            error={errors.email}
+          />
           <Field
             label="Password"
-            name="password"
             type="password"
             autoComplete="current-password"
+            {...register("password")}
+            error={errors.password}
           />
-          <Button className="self-end mt-2">Sign in</Button>
+          <Button className="self-end mt-2" as="button">
+            Sign in
+          </Button>
         </form>
       </div>
     </div>

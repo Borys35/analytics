@@ -52,8 +52,6 @@ const SignUpPage = () => {
     console.log(data, error);
   };
 
-  // supabaseClient.auth.signOut();
-
   return (
     <div className="flex flex-col py-24 gap-16">
       <Header>
@@ -75,13 +73,13 @@ const SignUpPage = () => {
         <form className={listClasses} onSubmit={handleSubmit(onSubmit)}>
           <Field
             label="Username"
-            autoComplete="username"
             {...register("username")}
             error={errors.username}
           />
           <Field
             label="Your e-mail"
             type="email"
+            autoComplete="username"
             {...register("email")}
             error={errors.email}
           />

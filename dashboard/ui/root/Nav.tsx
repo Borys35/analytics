@@ -17,9 +17,14 @@ const Nav = () => {
           </NavItem>
         </div>
         <div className="hidden md:block border-r-neutral-700 border-r-2 h-6"></div>
-        <Link href="/sign-up">
-          <Button>Sign up</Button>
-        </Link>
+        <div className="flex gap-6 items-center">
+          <NavItem>
+            <Link href="/sign-in">Sign in</Link>
+          </NavItem>
+          <Link href="/sign-up">
+            <Button>Sign up</Button>
+          </Link>
+        </div>
       </div>
     </Container>
   );
