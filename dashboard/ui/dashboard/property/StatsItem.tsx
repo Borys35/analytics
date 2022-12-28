@@ -23,8 +23,8 @@ const StatsItem: FC<Props> = ({
         className
       )}
     >
-      <p className="text-lg font-bold">{title}</p>
-      <p className="text-6xl text-neutral-50 font-bold">{count}</p>
+      <p>{title}</p>
+      <p className="text-5xl text-neutral-50 font-bold">{count}</p>
     </div>
   );
 };
