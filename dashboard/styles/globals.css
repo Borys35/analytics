@@ -48,4 +48,8 @@
   .link {
     @apply underline text-primary-400;
   }
+
+  .box {
+    @apply border-2 border-neutral-700 bg-neutral-800 rounded-lg shadow-xl;
+  }
 }

@@ -75,7 +75,7 @@ const PropertyLayout = ({
           />
         </Link>
       </Sidebar>
-      <MainPanel>{children}</MainPanel>
+      <MainPanel title="property to do">{children}</MainPanel>
     </>
   );
 };
