@@ -4,7 +4,7 @@ import InstructionItem from "@/ui/InstructionItem";
 import ServiceItem from "@/ui/ServiceItem";
 import Link from "next/link";
 
-const Homepage = () => {
+const Homepage = async () => {
   return (
     <div className="flex flex-col py-24 gap-48">
       <Header>

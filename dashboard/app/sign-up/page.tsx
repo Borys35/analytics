@@ -5,7 +5,10 @@ import Field from "@/ui/atoms/Field";
 import Header from "@/ui/Header";
 import ProviderButtons from "@/ui/ProviderButtons";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { AuthError } from "@supabase/supabase-js";
 import Link from "next/link";
+import { redirect } from "next/navigation";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { SubmitHandler } from "react-hook-form/dist/types/form";
 import * as yup from "yup";
@@ -31,6 +34,8 @@ const schema = yup
   .required();
 
 const SignUpPage = () => {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<AuthError | null>(null);
   const {
     formState: { errors },
     handleSubmit,
@@ -44,11 +49,18 @@ const SignUpPage = () => {
     username,
     password,
   }) => {
+    setLoading(true);
+
     const { data, error } = await supabaseClient.auth.signUp({
       email,
       password,
       options: { data: { username } },
     });
+
+    setLoading(false);
+    if (error) return setError(error);
+
+    redirect("/");
   };
 
   return (
@@ -67,10 +79,12 @@ const SignUpPage = () => {
         <ProviderButtons />
         <p className="self-center text-lg">or</p>
         <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
+          {error && <p className="text-error">{error.message}</p>}
           <Field
             label="Username"
             {...register("username")}
             error={errors.username}
+            autoComplete="name"
           />
           <Field
             label="Your e-mail"
@@ -93,7 +107,7 @@ const SignUpPage = () => {
             {...register("password2")}
             error={errors.password2}
           />
-          <Button className="self-end mt-2" as="button">
+          <Button className="self-end mt-2" as="button" disabled={loading}>
             Sign up
           </Button>
         </form>

@@ -6,7 +6,11 @@ import Field from "@/ui/atoms/Field";
 import Header from "@/ui/Header";
 import ProviderButtons from "@/ui/ProviderButtons";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { AuthError } from "@supabase/supabase-js";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { useCookies } from "react-cookie";
 import { SubmitHandler, useForm } from "react-hook-form";
 import * as yup from "yup";
 
@@ -23,6 +27,8 @@ const schema = yup
   .required();
 
 const SignInPage = () => {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<AuthError | null>(null);
   const {
     formState: { errors },
     handleSubmit,
@@ -30,12 +36,28 @@ const SignInPage = () => {
   } = useForm<Inputs>({
     resolver: yupResolver(schema),
   });
+  const router = useRouter();
+  const [cookies, setCookie] = useCookies();
 
   const onSubmit: SubmitHandler<Inputs> = async ({ email, password }) => {
-    const { data, error } = await supabaseClient.auth.signInWithPassword({
+    setLoading(true);
+
+    const {
+      data: { session },
+      error,
+    } = await supabaseClient.auth.signInWithPassword({
       email,
       password,
     });
+
+    setLoading(false);
+    if (error) return setError(error);
+    if (!session) return;
+
+    setCookie("access_token", session.access_token);
+    setCookie("refresh_token", session.refresh_token);
+
+    router.push("/");
   };
 
   return (
@@ -54,6 +76,7 @@ const SignInPage = () => {
         <ProviderButtons />
         <p className="self-center text-lg">or</p>
         <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
+          {error && <p className="text-error">{error.message}</p>}
           <Field
             label="Your e-mail"
             type="email"
@@ -68,7 +91,7 @@ const SignInPage = () => {
             {...register("password")}
             error={errors.password}
           />
-          <Button className="self-end mt-2" as="button">
+          <Button className="self-end mt-2" as="button" disabled={loading}>
             Sign in
           </Button>
         </form>

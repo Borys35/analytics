@@ -13,6 +13,7 @@ module.exports = {
       colors: {
         primary: colors.indigo,
         neutral: colors.gray,
+        error: colors.red[500],
       },
     },
   },

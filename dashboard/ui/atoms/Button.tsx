@@ -6,6 +6,7 @@ interface Props extends React.HTMLAttributes<HTMLDivElement> {
   size?: "base" | "lg";
   variant?: "primary" | "secondary";
   as?: React.ElementType;
+  disabled?: boolean;
 }
 
 const Button: FC<Props> = ({
@@ -13,6 +14,7 @@ const Button: FC<Props> = ({
   size = "base",
   variant = "primary",
   as,
+  disabled = false,
   className,
   ...props
 }) => {
@@ -21,7 +23,7 @@ const Button: FC<Props> = ({
   return (
     <Element
       className={classNames(
-        "rounded-lg transition font-bold cursor-pointer border-2 text-center",
+        "rounded-lg transition font-bold cursor-pointer border-2 text-center shadow-lg",
         { "px-4 py-1.5 text-base": size === "base" },
         { "px-8 py-3 text-lg": size === "lg" },
         {
@@ -32,6 +34,7 @@ const Button: FC<Props> = ({
           "border-primary-600 hover:border-primary-500":
             variant === "secondary",
         },
+        { "opacity-50 cursor-default pointer-events-none": disabled },
         className
       )}
       {...props}

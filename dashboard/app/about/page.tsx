@@ -1,7 +1,7 @@
 import Button from "@/ui/atoms/Button";
 import Header from "@/ui/Header";
 
-const AboutPage = () => {
+const AboutPage = async () => {
   return (
     <div className="flex flex-col py-24 gap-48">
       <Header>
