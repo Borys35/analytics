@@ -1,12 +1,15 @@
 import Link from "next/link";
 import Button from "../atoms/Button";
 import Container from "../atoms/Container";
+import Logo from "../atoms/Logo";
 import NavItem from "./NavItem";
 
 const Nav = () => {
   return (
     <Container as="nav" className="flex justify-between items-center">
-      <Link href="/">Logo</Link>
+      <Link href="/">
+        <Logo />
+      </Link>
       <div className="flex gap-12 items-center">
         <div className="md:flex gap-6 hidden">
           <NavItem>

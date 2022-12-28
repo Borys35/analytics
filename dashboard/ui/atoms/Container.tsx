@@ -12,7 +12,7 @@ const Container: FC<Props> = ({ as, children, className, ...props }) => {
   return (
     <Element
       className={classNames(
-        "w-full max-w-screen-xl mx-auto py-4 px-6 lg:py-8 lg:px-16",
+        "w-full max-w-screen-xl mx-auto py-4 px-6 lg:py-8 lg:px-12",
         className
       )}
       {...props}

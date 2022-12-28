@@ -1,5 +1,6 @@
 "use client";
 
+import { setCookies } from "@/lib/session";
 import { supabaseClient } from "@/lib/supabase";
 import Button from "@/ui/atoms/Button";
 import Field from "@/ui/atoms/Field";
@@ -11,22 +12,30 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useCookies } from "react-cookie";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
+import { SubmitHandler } from "react-hook-form/dist/types/form";
 import * as yup from "yup";
 
 type Inputs = {
+  username: string;
   email: string;
   password: string;
+  password2: string;
 };
 
 const schema = yup
   .object({
+    username: yup.string().min(2).max(16).required(),
     email: yup.string().email().required(),
     password: yup.string().min(8).required(),
+    password2: yup
+      .string()
+      .oneOf([yup.ref("password"), null])
+      .required(),
   })
   .required();
 
-const SignInPage = () => {
+const SignUpPage = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<AuthError | null>(null);
   const {
@@ -39,23 +48,27 @@ const SignInPage = () => {
   const router = useRouter();
   const [cookies, setCookie] = useCookies();
 
-  const onSubmit: SubmitHandler<Inputs> = async ({ email, password }) => {
+  const onSubmit: SubmitHandler<Inputs> = async ({
+    email,
+    username,
+    password,
+  }) => {
     setLoading(true);
 
     const {
       data: { session },
       error,
-    } = await supabaseClient.auth.signInWithPassword({
+    } = await supabaseClient.auth.signUp({
       email,
       password,
+      options: { data: { username } },
     });
 
     setLoading(false);
     if (error) return setError(error);
     if (!session) return;
 
-    setCookie("access_token", session.access_token);
-    setCookie("refresh_token", session.refresh_token);
+    setCookies(setCookie, session);
 
     router.push("/");
   };
@@ -63,11 +76,11 @@ const SignInPage = () => {
   return (
     <div className="flex flex-col py-24 gap-16">
       <Header>
-        <h1 className="mb-6">Sign in</h1>
+        <h1 className="mb-6">Sign up</h1>
         <p className="text-lg">
-          Sign in to your existing account. If you haven’t made one,{" "}
-          <Link href="/sign-up" className="link">
-            sign up
+          Create new account and get started. If you already have an account,{" "}
+          <Link href="/sign-in" className="link">
+            sign in
           </Link>{" "}
           instead.
         </p>
@@ -78,6 +91,12 @@ const SignInPage = () => {
         <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
           {error && <p className="text-error">{error.message}</p>}
           <Field
+            label="Username"
+            {...register("username")}
+            error={errors.username}
+            autoComplete="name"
+          />
+          <Field
             label="Your e-mail"
             type="email"
             autoComplete="username"
@@ -87,12 +106,19 @@ const SignInPage = () => {
           <Field
             label="Password"
             type="password"
-            autoComplete="current-password"
+            autoComplete="new-password"
             {...register("password")}
             error={errors.password}
           />
+          <Field
+            label="Repeat password"
+            type="password"
+            autoComplete="new-password"
+            {...register("password2")}
+            error={errors.password2}
+          />
           <Button className="self-end mt-2" as="button" disabled={loading}>
-            Sign in
+            Sign up
           </Button>
         </form>
       </div>
@@ -100,4 +126,4 @@ const SignInPage = () => {
   );
 };
 
-export default SignInPage;
+export default SignUpPage;
