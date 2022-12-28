@@ -11,7 +11,9 @@ const Sidebar: FC<Props> = ({ children }) => {
   return (
     <div className="col-start-1 col-end-4 xl:col-end-3 w-full h-screen pb-8 lg:pb-16 md:sticky top-0">
       <div className="flex flex-col border-r-2 h-full border-r-neutral-700">
-        <Logo />
+        <Link href="/dashboard">
+          <Logo />
+        </Link>
         <div className="mt-16 flex-1 flex flex-col justify-between">
           <div className="flex flex-col gap-4 items-start">{children}</div>
           <div className="flex flex-col gap-4 items-start">
