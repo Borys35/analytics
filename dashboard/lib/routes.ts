@@ -1,27 +1,26 @@
-import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { supabaseClient } from "./supabase";
+import { session } from "./session";
 
 export async function privateRoute(redirectTo?: string) {
-  const nextCookies = cookies();
-  const access_token = nextCookies.get("access_token")?.value || "";
-  const refresh_token = nextCookies.get("refresh_token")?.value || "";
-  const { data } = await supabaseClient.auth.setSession({
-    access_token,
-    refresh_token,
-  });
+  const r = () => redirect(redirectTo || "/sign-up");
+  try {
+    const { data, error } = await session();
 
-  if (!data.session) redirect(redirectTo || "/sign-up");
+    if (!data.session) r();
+  } catch {
+    console.error("This route is forbidden.");
+    r();
+  }
 }
 
 export async function publicOnlyRoute(redirectTo?: string) {
-  const nextCookies = cookies();
-  const access_token = nextCookies.get("access_token")?.value || "";
-  const refresh_token = nextCookies.get("refresh_token")?.value || "";
-  const { data } = await supabaseClient.auth.setSession({
-    access_token,
-    refresh_token,
-  });
+  const r = () => redirect(redirectTo || "/");
+  try {
+    const { data, error } = await session();
 
-  if (!!data.session) redirect(redirectTo || "/");
+    if (!!data.session) r();
+  } catch {
+    console.error("This route is forbidden.");
+    r();
+  }
 }

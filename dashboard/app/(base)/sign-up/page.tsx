@@ -1,7 +1,6 @@
 "use client";
 
-import { setCookies } from "@/lib/session";
-import { supabaseClient } from "@/lib/supabase";
+import { supabase } from "@/lib/supabase";
 import Button from "@/ui/atoms/Button";
 import Field from "@/ui/atoms/Field";
 import Header from "@/ui/Header";
@@ -11,7 +10,6 @@ import { AuthError } from "@supabase/supabase-js";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { useCookies } from "react-cookie";
 import { useForm } from "react-hook-form";
 import { SubmitHandler } from "react-hook-form/dist/types/form";
 import * as yup from "yup";
@@ -46,7 +44,6 @@ const SignUpPage = () => {
     resolver: yupResolver(schema),
   });
   const router = useRouter();
-  const [cookies, setCookie] = useCookies();
 
   const onSubmit: SubmitHandler<Inputs> = async ({
     email,
@@ -58,7 +55,7 @@ const SignUpPage = () => {
     const {
       data: { session },
       error,
-    } = await supabaseClient.auth.signUp({
+    } = await supabase.auth.signUp({
       email,
       password,
       options: { data: { username } },
@@ -67,8 +64,6 @@ const SignUpPage = () => {
     setLoading(false);
     if (error) return setError(error);
     if (!session) return;
-
-    setCookies(setCookie, session);
 
     router.push("/");
   };

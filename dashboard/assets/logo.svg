@@ -3,7 +3,7 @@
   <defs>
     <style>
       .cls-1 {
-        fill: #231f20;
+        fill: white;
       }
     </style>
   </defs>
@@ -11,7 +11,7 @@
     <g>
       <path class="cls-1" d="m33.81,0H0v30h33.81c11.84,0,21.44,9.6,21.44,21.44v90.01h30V51.44C85.25,23.08,62.17,0,33.81,0Z"/>
       <path class="cls-1" d="m141.44,0v30h-50.05c-4.62-12.38-13.13-22.87-24.02-30h74.07Z"/>
-      <circle class="cls-1" cx="110.25" cy="126.45" r="15"/>
+      <circle fill="white" class="cls-1" cx="110.25" cy="126.45" r="15"/>
     </g>
   </g>
 </svg>
