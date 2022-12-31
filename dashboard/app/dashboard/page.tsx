@@ -1,25 +1,29 @@
-import Button from "@/ui/atoms/Button";
+import { session } from "@/lib/session";
+import { supabase } from "@/lib/supabase";
 import MainPanel from "@/ui/dashboard/MainPanel";
-import PropertyItem from "@/ui/dashboard/PropertyItem";
 import Sidebar from "@/ui/dashboard/sidebar/Sidebar";
+import Panel from "./Panel";
 
-const DashboardPage = () => {
+async function getProperties() {
+  const s = await session();
+
+  const p = await supabase
+    .from("analytics")
+    .select("*")
+    .eq("user_id", s.data.user?.id)
+    .order("created_at", { ascending: false });
+
+  return p.data;
+}
+
+const DashboardPage = async () => {
+  const properties = await getProperties();
+
   return (
     <>
       <Sidebar />
       <MainPanel title="Admin">
-        <div className="flex flex-col gap-4">
-          <Button className="self-start">Add property</Button>
-          <PropertyItem id="1" name="Property 1" date={new Date().toString()} />
-          <PropertyItem id="1" name="Property 3" date={new Date().toString()} />
-          <PropertyItem id="1" name="Property 4" date={new Date().toString()} />
-          <PropertyItem id="1" name="Property 1" date={new Date().toString()} />
-          <PropertyItem id="1" name="Property 3" date={new Date().toString()} />
-          <PropertyItem id="1" name="Property 4" date={new Date().toString()} />
-          <PropertyItem id="1" name="Property 1" date={new Date().toString()} />
-          <PropertyItem id="1" name="Property 3" date={new Date().toString()} />
-          <PropertyItem id="1" name="Property 4" date={new Date().toString()} />
-        </div>
+        <Panel initialProperties={properties as any} />
       </MainPanel>
     </>
   );

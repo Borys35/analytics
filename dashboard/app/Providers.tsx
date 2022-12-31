@@ -10,7 +10,6 @@ interface Props {
 const Providers: FC<Props> = ({ children }) => {
   useEffect(() => {
     supabase.auth.onAuthStateChange((event, session) => {
-      console.log("state chabnged");
       if (event === "SIGNED_OUT" || event === "USER_DELETED") {
         // delete cookies on sign out
         const expires = new Date(0).toUTCString();
