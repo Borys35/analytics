@@ -9,13 +9,13 @@ interface Props {
 
 const Sidebar: FC<Props> = ({ children }) => {
   return (
-    <div className="h-screen pb-8 lg:pb-16 top-0">
-      <div className="flex flex-col border-r-2 h-full pr-6 lg:pr-12 border-r-neutral-700">
+    <div className="fixed top-4 bottom-4">
+      <div className="flex flex-col border-r-2 h-full pr-6 border-r-neutral-700">
         <Link href="/dashboard">
           <Logo smallOnly />
         </Link>
         <div className="mt-16 flex-1 flex flex-col justify-between">
-          <div className="flex flex-col gap-4 items-start">{children}</div>
+          <div className="flex flex-col gap-5 items-start">{children}</div>
           <div className="flex flex-col gap-4 items-start">
             <Link href="/dashboard">
               <SidebarItem

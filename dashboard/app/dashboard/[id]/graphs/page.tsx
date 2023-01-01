@@ -1,6 +1,7 @@
 "use client";
 
 import Button from "@/ui/atoms/Button";
+import Modal from "@/ui/dashboard/Modal";
 import GraphStatsItem from "@/ui/dashboard/property/GraphStatsItem";
 import {
   CategoryScale,
@@ -12,6 +13,7 @@ import {
   Title,
   Tooltip,
 } from "chart.js";
+import { useState } from "react";
 import { Line } from "react-chartjs-2";
 
 Chart.register(
@@ -78,10 +80,12 @@ const colorArray = [
 ];
 
 const GraphsPage = () => {
+  const [modalOpen, setModalOpen] = useState(false);
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
       <div className="flex flex-col gap-4">
-        <Button>Add a stat</Button>
+        <Button onClick={() => setModalOpen(true)}>Add a stat</Button>
         <GraphStatsItem title="page_view" subtitle="/about" />
         <GraphStatsItem title="session_start" />
       </div>
@@ -111,6 +115,9 @@ const GraphsPage = () => {
           }}
         />
       </div>
+      <Modal open={modalOpen} onShadowClick={() => setModalOpen(false)}>
+        dsfsdfs
+      </Modal>
     </div>
   );
 };

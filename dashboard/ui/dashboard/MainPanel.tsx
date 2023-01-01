@@ -7,7 +7,7 @@ interface Props {
 
 const MainPanel: FC<Props> = ({ children, title }) => {
   return (
-    <div className="flex-1">
+    <div className="ml-20 flex-1">
       <h3 className="mb-16">{title}</h3>
       {children}
     </div>
