@@ -1,15 +1,27 @@
+import { supabase } from "@/lib/supabase";
 import MainPanel from "@/ui/dashboard/MainPanel";
 import Sidebar from "@/ui/dashboard/sidebar/Sidebar";
 import SidebarItem from "@/ui/dashboard/sidebar/SidebarItem";
 import Link from "next/link";
 
-const PropertyLayout = ({
+async function getProperty(id: number) {
+  const { data } = await supabase.from("analytics").select("*").eq("id", id);
+
+  if (!data) throw new Error("Property does not exist.");
+  const property = data[0];
+
+  return property;
+}
+
+const PropertyLayout = async ({
   children,
   params: { id },
 }: {
   children: React.ReactNode;
   params: { id: string };
 }) => {
+  const property = await getProperty(parseInt(id));
+
   return (
     <>
       <Sidebar>
@@ -75,7 +87,7 @@ const PropertyLayout = ({
           />
         </Link>
       </Sidebar>
-      <MainPanel title="property to do">{children}</MainPanel>
+      <MainPanel title={property.name || "unknown"}>{children}</MainPanel>
     </>
   );
 };

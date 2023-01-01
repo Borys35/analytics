@@ -2,7 +2,7 @@ import classNames from "classnames";
 import { FC } from "react";
 
 interface Props {
-  count: string;
+  count: number;
   title: string;
   variant?: "default" | "primary" | "error";
   className?: string;

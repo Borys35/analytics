@@ -1,22 +1,23 @@
-import StatsItem from "@/ui/dashboard/property/StatsItem";
+import { supabase } from "@/lib/supabase";
+import StatsList from "./StatsList";
+
+export const dynamic = "force-dynamic",
+  fetchCache = "only-no-store";
+
+async function getProperty(id: number) {
+  const { data } = await supabase.from("analytics").select("*").eq("id", id);
+
+  if (!data) throw new Error("Property does not exist.");
+  const property = data[0];
+
+  return property;
+}
 
 const PropertyPage = async ({ params }: { params: { id: string } }) => {
   const { id } = params;
+  const property = await getProperty(parseInt(id));
 
-  return (
-    <div className="grid lg:grid-cols-2 xl:grid-cols-3 gap-4">
-      <StatsItem
-        count="34532"
-        title="pages viewed"
-        variant="primary"
-        className="lg:col-span-2"
-      />
-      <StatsItem count="34532" title="pages viewed" />
-      <StatsItem count="34532" title="pages viewed" />
-      <StatsItem count="34532" title="pages viewed" />
-      <StatsItem count="34532" title="pages viewed" variant="error" />
-    </div>
-  );
+  return <StatsList initialProperty={property} />;
 };
 
 export default PropertyPage;
