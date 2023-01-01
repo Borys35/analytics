@@ -7,9 +7,11 @@ interface Props {
 
 const SidebarItem: FC<Props> = ({ icon, title }) => {
   return (
-    <div className="flex gap-4 items-center transition text-neutral-400 hover:text-neutral-50">
+    <div className="group relative">
       {icon}
-      <p className="font-bold text-current">{title}</p>
+      <p className="box px-2 py-1 transition absolute left-full translate-x-4 top-1/2 -translate-y-1/2 w-max scale-0 origin-left group-hover:scale-100">
+        {title}
+      </p>
     </div>
   );
 };
