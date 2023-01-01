@@ -16,6 +16,9 @@ module.exports = {
         error: colors.red[500],
       },
     },
+    fontFamily: {
+      sans: '"Source Sans Pro"',
+    },
   },
   plugins: [],
 };
