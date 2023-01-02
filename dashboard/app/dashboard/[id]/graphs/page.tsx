@@ -1,6 +1,8 @@
 "use client";
 
+import { propertyEventTypes } from "@/types/supabaseJson";
 import Button from "@/ui/atoms/Button";
+import Select from "@/ui/atoms/Select";
 import Modal from "@/ui/dashboard/Modal";
 import GraphStatsItem from "@/ui/dashboard/property/GraphStatsItem";
 import {
@@ -15,6 +17,7 @@ import {
 } from "chart.js";
 import { useState } from "react";
 import { Line } from "react-chartjs-2";
+import { useForm } from "react-hook-form";
 
 Chart.register(
   CategoryScale,
@@ -79,8 +82,15 @@ const colorArray = [
   "#6666FF",
 ];
 
+type Inputs = {
+  event: string;
+};
+
 const GraphsPage = () => {
   const [modalOpen, setModalOpen] = useState(false);
+  const { register, handleSubmit } = useForm<Inputs>();
+
+  function onSubmit(data: Inputs) {}
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -116,7 +126,14 @@ const GraphsPage = () => {
         />
       </div>
       <Modal open={modalOpen} onShadowClick={() => setModalOpen(false)}>
-        dsfsdfs
+        <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
+          <Select {...register("event")}>
+            {propertyEventTypes.map((t) => (
+              <option key={t}>{t}</option>
+            ))}
+          </Select>
+          <Button as="button">Add</Button>
+        </form>
       </Modal>
     </div>
   );

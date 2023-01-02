@@ -23,7 +23,9 @@ const Modal: FC<Props> = ({ children, open, onShadowClick }) => {
         data-shadow
         onClick={handleShadowClick}
       >
-        <div className="box px-12 py-8">{children}</div>
+        <div className="box bg-neutral-900 border-neutral-800 px-12 py-8">
+          {children}
+        </div>
       </div>,
       document.body
     );
