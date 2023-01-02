@@ -4,7 +4,7 @@ import Sidebar from "@/ui/dashboard/sidebar/Sidebar";
 import SidebarItem from "@/ui/dashboard/sidebar/SidebarItem";
 import Link from "next/link";
 
-async function getProperty(id: number) {
+async function getProperty(id: string) {
   const { data } = await supabase.from("analytics").select("*").eq("id", id);
 
   if (!data) throw new Error("Property does not exist.");
@@ -20,7 +20,7 @@ const PropertyLayout = async ({
   children: React.ReactNode;
   params: { id: string };
 }) => {
-  const property = await getProperty(parseInt(id));
+  const property = await getProperty(id);
 
   return (
     <>

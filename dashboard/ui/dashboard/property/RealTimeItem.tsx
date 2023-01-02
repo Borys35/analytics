@@ -9,7 +9,7 @@ const RealTimeItem: FC<Props> = ({ name, date }) => {
   return (
     <div className="relative">
       <p className="absolute top-1/2 -translate-y-1/2 right-full -translate-x-8 w-max">
-        {Intl.DateTimeFormat("en", { dateStyle: "long" }).format(
+        {Intl.DateTimeFormat("en", { timeStyle: "long" }).format(
           new Date(date)
         )}
       </p>

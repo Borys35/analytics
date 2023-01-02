@@ -1,23 +1,27 @@
-import RealTimeItem from "@/ui/dashboard/property/RealTimeItem";
+import { supabase } from "@/lib/supabase";
+import { PropertyEvent } from "@/types/supabaseJson";
+import Panel from "./Panel";
 
-const RealTimePage = () => {
+async function getInitialEvents(id: string) {
+  const { data } = await supabase
+    .from("analytics")
+    .select("events")
+    .eq("id", id);
+
+  if (!data) throw new Error("No analytics with this ID found.");
+
+  return data[0].events;
+}
+
+const RealTimePage = async ({ params }: { params: { id: string } }) => {
+  const { id } = params;
+  const initialEvents = await getInitialEvents(id);
+
   return (
-    <div className="flex flex-col gap-12 items-center relative">
-      <div className="-z-10 absolute top-0 bottom-0 left-1/2 -translate-x-1/2 border-r-2 border-neutral-700"></div>
-      <RealTimeItem name="session_start" date={new Date().toString()} />
-      <RealTimeItem name="page_view" date={new Date().toString()} />
-      <RealTimeItem name="page_view" date={new Date().toString()} />
-      <RealTimeItem name="event" date={new Date().toString()} />
-      <RealTimeItem name="page_view" date={new Date().toString()} />
-      <RealTimeItem name="page_view" date={new Date().toString()} />
-      <RealTimeItem name="event" date={new Date().toString()} />
-      <RealTimeItem name="page_view" date={new Date().toString()} />
-      <RealTimeItem name="page_view" date={new Date().toString()} />
-      <RealTimeItem name="event" date={new Date().toString()} />
-      <RealTimeItem name="page_view" date={new Date().toString()} />
-      <RealTimeItem name="page_view" date={new Date().toString()} />
-      <RealTimeItem name="event" date={new Date().toString()} />
-    </div>
+    <Panel
+      id={id}
+      initialEvents={initialEvents as unknown as PropertyEvent[]}
+    />
   );
 };
 

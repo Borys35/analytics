@@ -4,7 +4,7 @@ import StatsList from "./StatsList";
 export const dynamic = "force-dynamic",
   fetchCache = "only-no-store";
 
-async function getProperty(id: number) {
+async function getProperty(id: string) {
   const { data } = await supabase.from("analytics").select("*").eq("id", id);
 
   if (!data) throw new Error("Property does not exist.");
@@ -15,7 +15,7 @@ async function getProperty(id: number) {
 
 const PropertyPage = async ({ params }: { params: { id: string } }) => {
   const { id } = params;
-  const property = await getProperty(parseInt(id));
+  const property = await getProperty(id);
 
   return <StatsList initialProperty={property} />;
 };
