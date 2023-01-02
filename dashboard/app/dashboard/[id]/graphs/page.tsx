@@ -1,6 +1,6 @@
 "use client";
 
-import { propertyEventTypes } from "@/types/supabaseJson";
+import { PropertyEventType, propertyEventTypes } from "@/types/supabaseJson";
 import Button from "@/ui/atoms/Button";
 import Select from "@/ui/atoms/Select";
 import Modal from "@/ui/dashboard/Modal";
@@ -8,6 +8,7 @@ import GraphStatsItem from "@/ui/dashboard/property/GraphStatsItem";
 import {
   CategoryScale,
   Chart,
+  ChartData,
   Legend,
   LinearScale,
   LineElement,
@@ -83,40 +84,57 @@ const colorArray = [
 ];
 
 type Inputs = {
-  event: string;
+  event: PropertyEventType;
 };
 
 const GraphsPage = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const { register, handleSubmit } = useForm<Inputs>();
+  const [eventTypes, setEventTypes] = useState<PropertyEventType[]>([
+    "session_start",
+  ]);
 
-  function onSubmit(data: Inputs) {}
+  const datasets: ChartData<"line", number[], string>["datasets"] = [
+    ...eventTypes.map((t, i) => ({
+      label: t,
+      borderColor: colorArray[i],
+      data: [3, 6, i],
+    })),
+  ];
+
+  function onSubmit(data: Inputs) {
+    if (!data.event || eventTypes.includes(data.event)) return;
+    setEventTypes([...eventTypes, data.event]);
+    setModalOpen(false);
+  }
+
+  function handleEventTypeDelete(type: PropertyEventType) {
+    const types = [...eventTypes];
+    types.splice(
+      types.findIndex((t) => t === type),
+      1
+    );
+    setEventTypes(types);
+  }
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
       <div className="flex flex-col gap-4">
         <Button onClick={() => setModalOpen(true)}>Add a stat</Button>
-        <GraphStatsItem title="page_view" subtitle="/about" />
-        <GraphStatsItem title="session_start" />
+        {eventTypes.map((t) => (
+          <GraphStatsItem
+            key={t}
+            title={t}
+            onDeleteClick={() => handleEventTypeDelete(t)}
+          />
+        ))}
       </div>
       <div className="lg:col-start-2 lg:col-end-4">
         <Line
           className="w-full"
-          datasetIdKey="id"
           data={{
             labels: ["Dec 27, 2022", "Dec 28, 2022", "Dec 29, 2022"],
-            datasets: [
-              {
-                label: "page_view (/about)",
-                borderColor: colorArray[0],
-                data: [5, 3, 7],
-              },
-              {
-                label: "session_start",
-                borderColor: colorArray[1],
-                data: [3, 6, 1],
-              },
-            ],
+            datasets,
           }}
           options={{
             maintainAspectRatio: false,
@@ -128,9 +146,11 @@ const GraphsPage = () => {
       <Modal open={modalOpen} onShadowClick={() => setModalOpen(false)}>
         <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
           <Select {...register("event")}>
-            {propertyEventTypes.map((t) => (
-              <option key={t}>{t}</option>
-            ))}
+            {propertyEventTypes
+              .filter((x) => !eventTypes.includes(x))
+              .map((t, i) => (
+                <option key={t}>{t}</option>
+              ))}
           </Select>
           <Button as="button">Add</Button>
         </form>

@@ -5,10 +5,11 @@ interface Props extends React.HTMLAttributes<HTMLSelectElement> {
 }
 
 const Select = forwardRef<HTMLSelectElement, Props>(
-  ({ children, ...props }) => {
+  ({ children, ...props }, ref) => {
     return (
       <select
         className="min-w-[240px] px-4 py-1.5 text-base box outline-none focus:border-neutral-500"
+        ref={ref}
         {...props}
       >
         {children}
