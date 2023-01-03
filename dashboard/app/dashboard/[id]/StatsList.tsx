@@ -31,11 +31,12 @@ const StatsList: FC<Props> = ({ initialProperty }) => {
   return (
     <div>
       <Button
-        className="w-fit mb-4"
+        className="w-fit ml-auto mb-4"
+        variant="secondary"
         onClick={handleRefetchProperty}
         disabled={loading}
       >
-        Reload
+        Refresh
       </Button>
       <div className="grid lg:grid-cols-2 xl:grid-cols-3 gap-4">
         {propertyEventTypes.map((t, i) => (

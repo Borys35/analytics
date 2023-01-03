@@ -17,7 +17,7 @@ const GraphsPage = async ({ params }: { params: { id: string } }) => {
   const { id } = params;
   const events = await getInitialEvents(id);
 
-  return <Panel initialEvents={events} />;
+  return <Panel initialEvents={events} id={id} />;
 };
 
 export default GraphsPage;
