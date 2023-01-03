@@ -1,162 +1,23 @@
-"use client";
+import { supabase } from "@/lib/supabase";
+import { PropertyEvent } from "@/types/supabaseJson";
+import Panel from "./Panel";
 
-import { PropertyEventType, propertyEventTypes } from "@/types/supabaseJson";
-import Button from "@/ui/atoms/Button";
-import Select from "@/ui/atoms/Select";
-import Modal from "@/ui/dashboard/Modal";
-import GraphStatsItem from "@/ui/dashboard/property/GraphStatsItem";
-import {
-  CategoryScale,
-  Chart,
-  ChartData,
-  Legend,
-  LinearScale,
-  LineElement,
-  PointElement,
-  Title,
-  Tooltip,
-} from "chart.js";
-import { useState } from "react";
-import { Line } from "react-chartjs-2";
-import { useForm } from "react-hook-form";
+async function getInitialEvents(id: string) {
+  const { data } = await supabase
+    .from("analytics")
+    .select("events")
+    .eq("id", id);
 
-Chart.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend
-);
+  if (!data) throw new Error("No analytics with this ID found.");
 
-const colorArray = [
-  "#FF6633",
-  "#FFB399",
-  "#FF33FF",
-  "#FFFF99",
-  "#00B3E6",
-  "#E6B333",
-  "#3366E6",
-  "#999966",
-  "#99FF99",
-  "#B34D4D",
-  "#80B300",
-  "#809900",
-  "#E6B3B3",
-  "#6680B3",
-  "#66991A",
-  "#FF99E6",
-  "#CCFF1A",
-  "#FF1A66",
-  "#E6331A",
-  "#33FFCC",
-  "#66994D",
-  "#B366CC",
-  "#4D8000",
-  "#B33300",
-  "#CC80CC",
-  "#66664D",
-  "#991AFF",
-  "#E666FF",
-  "#4DB3FF",
-  "#1AB399",
-  "#E666B3",
-  "#33991A",
-  "#CC9999",
-  "#B3B31A",
-  "#00E680",
-  "#4D8066",
-  "#809980",
-  "#E6FF80",
-  "#1AFF33",
-  "#999933",
-  "#FF3380",
-  "#CCCC00",
-  "#66E64D",
-  "#4D80CC",
-  "#9900B3",
-  "#E64D66",
-  "#4DB380",
-  "#FF4D4D",
-  "#99E6E6",
-  "#6666FF",
-];
+  return data[0].events as unknown as PropertyEvent[];
+}
 
-type Inputs = {
-  event: PropertyEventType;
-};
+const GraphsPage = async ({ params }: { params: { id: string } }) => {
+  const { id } = params;
+  const events = await getInitialEvents(id);
 
-const GraphsPage = () => {
-  const [modalOpen, setModalOpen] = useState(false);
-  const { register, handleSubmit } = useForm<Inputs>();
-  const [eventTypes, setEventTypes] = useState<PropertyEventType[]>([
-    "session_start",
-  ]);
-
-  const datasets: ChartData<"line", number[], string>["datasets"] = [
-    ...eventTypes.map((t, i) => ({
-      label: t,
-      borderColor: colorArray[i],
-      data: [3, 6, i],
-    })),
-  ];
-
-  function onSubmit(data: Inputs) {
-    if (!data.event || eventTypes.includes(data.event)) return;
-    setEventTypes([...eventTypes, data.event]);
-    setModalOpen(false);
-  }
-
-  function handleEventTypeDelete(type: PropertyEventType) {
-    const types = [...eventTypes];
-    types.splice(
-      types.findIndex((t) => t === type),
-      1
-    );
-    setEventTypes(types);
-  }
-
-  return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-      <div className="flex flex-col gap-4">
-        <Button onClick={() => setModalOpen(true)}>Add a stat</Button>
-        {eventTypes.map((t) => (
-          <GraphStatsItem
-            key={t}
-            title={t}
-            onDeleteClick={() => handleEventTypeDelete(t)}
-          />
-        ))}
-      </div>
-      <div className="lg:col-start-2 lg:col-end-4">
-        <Line
-          className="w-full"
-          data={{
-            labels: ["Dec 27, 2022", "Dec 28, 2022", "Dec 29, 2022"],
-            datasets,
-          }}
-          options={{
-            maintainAspectRatio: false,
-            responsive: true,
-            color: "#ffffff",
-          }}
-        />
-      </div>
-      <Modal open={modalOpen} onShadowClick={() => setModalOpen(false)}>
-        <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
-          <Select {...register("event")}>
-            {propertyEventTypes
-              .filter((x) => !eventTypes.includes(x))
-              .map((t, i) => (
-                <option key={t}>{t}</option>
-              ))}
-          </Select>
-          <Button as="button">Add</Button>
-        </form>
-      </Modal>
-    </div>
-  );
+  return <Panel initialEvents={events} />;
 };
 
 export default GraphsPage;
