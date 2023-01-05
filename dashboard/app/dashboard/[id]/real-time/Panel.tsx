@@ -48,7 +48,7 @@ const Panel: FC<Props> = ({ id, initialEvents }) => {
       <div className="-z-10 absolute top-4 bottom-4 left-1/2 -translate-x-1/2 border-r-2 border-neutral-700"></div>
       <div className="-z-10 absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-neutral-800 to-neutral-800/0"></div>
       {events.map((e) => (
-        <RealTimeItem key={e.id} name={e.type} date={e.timestamp} />
+        <RealTimeItem key={e.id} name={e.type} date={e.created_at} />
       ))}
     </div>
   );

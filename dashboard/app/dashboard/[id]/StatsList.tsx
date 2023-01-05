@@ -1,6 +1,6 @@
 "use client";
 
-import { supabase } from "@/lib/supabase";
+import { getEvents, getProperty } from "@/lib/supabase";
 import { Database } from "@/types/supabase";
 import { PropertyEvent, propertyEventTypes } from "@/types/supabaseJson";
 import Button from "@/ui/atoms/Button";
@@ -9,22 +9,24 @@ import { FC, useState } from "react";
 
 interface Props {
   initialProperty: Database["public"]["Tables"]["analytics"]["Row"];
+  initialEvents: PropertyEvent[];
 }
 
-const StatsList: FC<Props> = ({ initialProperty }) => {
+const StatsList: FC<Props> = ({ initialProperty, initialEvents }) => {
   const [property, setProperty] = useState(initialProperty);
+  const [events, setEvents] = useState(initialEvents);
   const [loading, setLoading] = useState(false);
 
   async function handleRefetchProperty() {
     setLoading(true);
-    const { data } = await supabase
-      .from("analytics")
-      .select("*")
-      .eq("id", initialProperty.id);
 
-    if (!data) return;
+    const { id } = initialProperty;
+    const p = await getProperty(id);
+    const e = await getEvents(id);
 
-    setProperty(data[0]);
+    setProperty(p);
+    setEvents(e);
+
     setLoading(false);
   }
 
@@ -42,11 +44,7 @@ const StatsList: FC<Props> = ({ initialProperty }) => {
         {propertyEventTypes.map((t, i) => (
           <StatsItem
             key={`${i}. ${t}`}
-            count={
-              (property.events as unknown as PropertyEvent[]).filter(
-                (e) => e.type === t
-              ).length
-            }
+            count={events.filter((e) => e.type === t).length}
             title={t}
             variant={
               t === "session_start"

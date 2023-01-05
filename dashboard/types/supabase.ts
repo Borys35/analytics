@@ -35,6 +35,26 @@ export interface Database {
           id?: string
         }
       }
+      events: {
+        Row: {
+          id: number
+          created_at: string | null
+          event_type: string | null
+          analytics_id: string
+        }
+        Insert: {
+          id?: number
+          created_at?: string | null
+          event_type?: string | null
+          analytics_id: string
+        }
+        Update: {
+          id?: number
+          created_at?: string | null
+          event_type?: string | null
+          analytics_id?: string
+        }
+      }
       profiles: {
         Row: {
           id: string

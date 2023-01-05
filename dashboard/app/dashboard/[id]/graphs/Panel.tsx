@@ -1,6 +1,6 @@
 "use client";
 
-import { supabase } from "@/lib/supabase";
+import { getEvents } from "@/lib/supabase";
 import {
   PropertyEvent,
   PropertyEventType,
@@ -92,14 +92,11 @@ const Panel: FC<Props> = ({ initialEvents, id }) => {
 
   async function handleRefetchProperty() {
     setLoading(true);
-    const { data } = await supabase
-      .from("analytics")
-      .select("events")
-      .eq("id", id);
 
-    if (!data) return;
+    const events = await getEvents(id);
 
-    setEvents(data[0].events as unknown[] as PropertyEvent[]);
+    setEvents(events);
+
     setLoading(false);
   }
 
@@ -111,7 +108,7 @@ const Panel: FC<Props> = ({ initialEvents, id }) => {
       currentDate.setDate(currentDate.getDate() - i);
       return events.filter(
         (e) =>
-          e.type === t && getDay(currentDate) === getDay(new Date(e.timestamp))
+          e.type === t && getDay(currentDate) === getDay(new Date(e.created_at))
       ).length;
     });
 

@@ -10,6 +10,7 @@ export type PropertyEventType = typeof propertyEventTypes[number];
 
 export interface PropertyEvent {
   id: string;
+  analytics_id: string;
   type: PropertyEventType;
-  timestamp: string;
+  created_at: string;
 }
