@@ -1,5 +1,4 @@
 import axios from "axios";
-import { PropertyEventType } from "./dashboard/types/supabaseJson";
 
 const ENDPOINT = "http://localhost:3000/api/event";
 
@@ -11,7 +10,7 @@ export class Trakker {
   }
 
   initialize() {
-    const apiCall = (e: PropertyEventType) => {
+    const apiCall = (e: string) => {
       axios.post(ENDPOINT, {
         api_key: this.apiKey,
         event_type: e,
