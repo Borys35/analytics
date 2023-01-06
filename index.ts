@@ -40,3 +40,5 @@ export class Trakker {
     );
   }
 }
+
+export default Trakker;

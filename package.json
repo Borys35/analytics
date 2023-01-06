@@ -1,8 +1,9 @@
 {
   "name": "trakker-analytics",
-  "version": "0.0.4",
+  "version": "0.0.6",
   "description": "Trakker is a tool to measure and analyze website's statistics",
   "main": "index.js",
+  "types": "index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -10,7 +11,11 @@
     "type": "git",
     "url": "git+https://github.com/Borys35/trakker-analytics.git"
   },
-  "keywords": [],
+  "keywords": [
+    "analytics",
+    "traffic",
+    "SDK"
+  ],
   "author": "Borys Kaczmarek",
   "license": "MIT",
   "bugs": {
