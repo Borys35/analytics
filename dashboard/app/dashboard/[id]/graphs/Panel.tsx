@@ -108,7 +108,8 @@ const Panel: FC<Props> = ({ initialEvents, id }) => {
       currentDate.setDate(currentDate.getDate() - i);
       return events.filter(
         (e) =>
-          e.type === t && getDay(currentDate) === getDay(new Date(e.created_at))
+          e.event_type === t &&
+          getDay(currentDate) === getDay(new Date(e.created_at))
       ).length;
     });
 

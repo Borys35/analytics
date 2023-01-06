@@ -1,8 +1,7 @@
 import { getEvents, getProperty } from "@/lib/supabase";
 import StatsList from "./StatsList";
 
-export const dynamic = "force-dynamic",
-  fetchCache = "only-no-store";
+export const dynamic = "force-dynamic";
 
 const PropertyPage = async ({ params }: { params: { id: string } }) => {
   const { id } = params;

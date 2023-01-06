@@ -44,7 +44,7 @@ const StatsList: FC<Props> = ({ initialProperty, initialEvents }) => {
         {propertyEventTypes.map((t, i) => (
           <StatsItem
             key={`${i}. ${t}`}
-            count={events.filter((e) => e.type === t).length}
+            count={events.filter((e) => e.event_type === t).length}
             title={t}
             variant={
               t === "session_start"
