@@ -7,12 +7,15 @@ export class Trakker {
 
   constructor(api_key: string) {
     this.apiKey = api_key;
+    console.log("CONSTRUCTOR", this.apiKey, api_key);
   }
 
   initialize() {
+    const _this = this;
     const apiCall = (e: string) => {
+      console.log("apikey", _this.apiKey);
       axios.post(ENDPOINT, {
-        api_key: this.apiKey,
+        api_key: _this.apiKey,
         event_type: e,
       });
     };
