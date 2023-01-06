@@ -2,25 +2,31 @@ import axios from "axios";
 
 const ENDPOINT = "http://localhost:3000/api/event";
 
-export class Trakker {
-  apiKey: string;
+export default class Trakker {
+  #apiKey: string;
 
   constructor(api_key: string) {
-    this.apiKey = api_key;
-    console.log("CONSTRUCTOR", this.apiKey, api_key);
+    this.#apiKey = api_key;
   }
 
   initialize() {
     const _this = this;
     const apiCall = (e: string) => {
-      console.log("apikey", _this.apiKey);
       axios.post(ENDPOINT, {
-        api_key: _this.apiKey,
+        api_key: _this.#apiKey,
         event_type: e,
       });
     };
 
-    window.addEventListener("load", () => {
+    window.addEventListener("load", (e) => {
+      if (!localStorage.getItem("visited")) {
+        localStorage.setItem("visited", "true");
+        apiCall("first_visit");
+      }
+
+      if (!document.referrer.includes(location.origin))
+        apiCall("session_start");
+
       apiCall("page_view");
     });
 
@@ -35,7 +41,7 @@ export class Trakker {
       })
     );
 
-    const allAnchors = document.querySelectorAll("button");
+    const allAnchors = document.querySelectorAll("a[href]");
     allAnchors.forEach((b) =>
       b.addEventListener("click", () => {
         apiCall("link_click");
@@ -43,5 +49,3 @@ export class Trakker {
     );
   }
 }
-
-export default Trakker;
