@@ -1,11 +1,19 @@
 import { supabase } from "@/lib/supabase";
 import { PropertyEventType } from "@/types/supabaseJson";
 import { NextApiRequest, NextApiResponse } from "next";
+import NextCors from "nextjs-cors";
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  await NextCors(req, res, {
+    // Options
+    methods: ["POST"],
+    origin: "*",
+    optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+  });
+
   if (req.method !== "POST")
     return res.status(400).send(`${req.method} is not allowed.`);
 
@@ -26,13 +34,11 @@ export default async function handler(
 
   const { id } = analyticsData[0];
 
-  const { data, error, status } = await supabase
+  const { error, status } = await supabase
     .from("events")
     .insert({ event_type, analytics_id: id });
 
   if (error) return res.status(400).send(error.message);
-
-  if (!data) return res.status(400).send(`Event adding failed.`);
 
   res.status(status).send(`${event_type} event sent!`);
 }

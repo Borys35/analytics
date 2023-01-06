@@ -14,7 +14,6 @@ export interface Database {
           created_at: string | null
           user_id: string | null
           api_key: string | null
-          events: Json[] | null
           name: string | null
           id: string
         }
@@ -22,7 +21,6 @@ export interface Database {
           created_at?: string | null
           user_id?: string | null
           api_key?: string | null
-          events?: Json[] | null
           name?: string | null
           id?: string
         }
@@ -30,7 +28,6 @@ export interface Database {
           created_at?: string | null
           user_id?: string | null
           api_key?: string | null
-          events?: Json[] | null
           name?: string | null
           id?: string
         }
