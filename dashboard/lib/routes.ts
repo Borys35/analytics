@@ -6,9 +6,11 @@ export async function privateRoute(redirectTo?: string) {
   try {
     const { data, error } = await session();
 
+    if (error) throw error;
+
     if (!data.session) r();
-  } catch {
-    console.error("This route is forbidden.");
+  } catch (e: unknown) {
+    console.error(`This private route is forbidden. ${e}`);
     r();
   }
 }
@@ -18,9 +20,11 @@ export async function publicOnlyRoute(redirectTo?: string) {
   try {
     const { data, error } = await session();
 
+    if (error) throw error;
+
     if (!!data.session) r();
-  } catch {
-    console.error("This route is forbidden.");
+  } catch (e: unknown) {
+    console.error(`This public-only route is forbidden. ${e}`);
     r();
   }
 }
