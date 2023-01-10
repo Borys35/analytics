@@ -1,4 +1,5 @@
 const colors = require("tailwindcss/colors");
+const defaultTheme = require("tailwindcss/defaultTheme");
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -15,9 +16,9 @@ module.exports = {
         neutral: colors.slate,
         error: colors.red[500],
       },
-    },
-    fontFamily: {
-      sans: '"Source Sans Pro"',
+      fontFamily: {
+        sans: ["var(--font-source-sans-pro)", ...defaultTheme.fontFamily.sans],
+      },
     },
   },
   plugins: [],
