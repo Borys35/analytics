@@ -4,7 +4,7 @@ import { FC } from "react";
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
   size?: "base" | "lg";
-  variant?: "primary" | "secondary";
+  variant?: "primary" | "secondary" | "error";
   as?: React.ElementType;
   disabled?: boolean;
 }
@@ -33,6 +33,9 @@ const Button: FC<Props> = ({
         {
           "border-primary-600 hover:border-primary-500":
             variant === "secondary",
+        },
+        {
+          "bg-error border-error hover:border-red-400": variant === "error",
         },
         { "opacity-50 cursor-default pointer-events-none": disabled },
         className

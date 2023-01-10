@@ -5,7 +5,7 @@ import { Source_Sans_Pro } from "@next/font/google";
 import Providers from "./Providers";
 
 const sourceSansPro = Source_Sans_Pro({
-  weight: ["400", "700"],
+  weight: ["400", "600", "700"],
   variable: "--font-source-sans-pro",
   subsets: ["latin"],
 });
