@@ -7,6 +7,8 @@ import Panel from "./Panel";
 async function getProperties() {
   const s = await session();
 
+  if (!s) return;
+
   const p = await supabase
     .from("analytics")
     .select("*")
@@ -23,7 +25,7 @@ const DashboardPage = async () => {
     <>
       <Sidebar />
       <MainPanel title="Admin">
-        <Panel initialProperties={properties as any} />
+        <Panel initialProperties={properties as any[]} />
       </MainPanel>
     </>
   );

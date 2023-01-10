@@ -3,7 +3,7 @@ import { supabase } from "./supabase";
 
 type Session = Awaited<ReturnType<typeof supabase.auth.setSession>>;
 
-export async function session(): Promise<Session> {
+export async function session(): Promise<Session | null> {
   const nextCookies = cookies();
   const refreshToken = nextCookies.get("my-refresh-token")?.value;
   const accessToken = nextCookies.get("my-access-token")?.value;
@@ -17,6 +17,6 @@ export async function session(): Promise<Session> {
     return session;
   } else {
     // make sure you handle this case!
-    throw new Error("User's not authenticated");
+    return null;
   }
 }
