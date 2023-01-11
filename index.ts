@@ -1,8 +1,6 @@
 import axios from "axios";
 
-const ENDPOINT = (import.meta as any).env.DEV
-  ? "http://localhost:3000/api/event"
-  : "https://trakker-analytics.vercel.app/api/event";
+const ENDPOINT = "https://trakker-analytics.vercel.app/api/event";
 
 export default class Trakker {
   #apiKey: string;

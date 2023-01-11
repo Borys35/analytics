@@ -1,5 +1,5 @@
 import axios from "axios";
-const ENDPOINT = "http://localhost:3000/api/event";
+const ENDPOINT = "https://trakker-analytics.vercel.app/api/event";
 export default class Trakker {
     #apiKey;
     constructor(api_key) {
