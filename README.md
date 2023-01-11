@@ -39,7 +39,7 @@
     Trakker Analytics is an analytic tool for websites and web applications. With it, you can track traffic and see statistics on your websites. Trakker Analytics Dashboard has a clean interface with all the statistics. You can connect the SDK using the NPM package or the unpkg.com website. The point of the app is to make tracking implementation easy.
     <br />
     <br />
-    <a href="https://sht.vercel.app/">View Demo</a>
+    <a href="https://trakker-analytics.vercel.app/">View Demo</a>
     ·
     <a href="https://github.com/borys35/trakker-analytics/issues">Report Bug</a>
     ·

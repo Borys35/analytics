@@ -1,6 +1,6 @@
 {
   "name": "trakker-analytics",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Trakker is a tool to measure and analyze website's statistics",
   "main": "index.js",
   "types": "index.d.ts",
